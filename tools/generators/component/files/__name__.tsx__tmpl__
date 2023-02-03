@@ -1,0 +1,16 @@
+
+import { ForwardedRef, forwardRef } from 'react';
+import { <%= name %>RootStyle } from './<%= name %>.styles';
+
+export type <%= name %>Props = {
+  testProp?: string;
+};
+
+const <%= name %> = forwardRef(<T extends HTMLDivElement>(props: <%= name %>Props, ref: ForwardedRef<T>) => {
+  return <<%= name %>RootStyle ref={ref} {...props} />;
+});
+
+<%= name %>.displayName = '<%= name %>'
+<%= name %>.defaultProps = {}
+
+export default <%= name %>;

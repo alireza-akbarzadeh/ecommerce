@@ -1,0 +1,20 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'libs/storybook/*'
+pool:
+  name: 'develop6'
+
+steps:
+  - script: |
+      docker-compose -f docker-compose-develop.yml build dev-storybook --no-cache
+      docker-compose -f docker-compose-develop.yml kill dev-storybook
+      docker-compose -f docker-compose-develop.yml up -d dev-storybook
+    displayName: 'Build storybook develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

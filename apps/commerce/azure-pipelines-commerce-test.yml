@@ -1,0 +1,22 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - test
+  paths:
+    include:
+      - 'apps/commerce/*'
+pool:
+  name: 'TEST-pool'
+
+steps:
+  - script: |
+      cp apps/commerce/.env.test apps/commerce/.env
+      cp apps/admin/.env.test apps/admin/.env
+      docker-compose -f docker-compose-test.yml build test-commerce --no-cache
+      docker-compose -f docker-compose-test.yml kill test-commerce
+      docker-compose -f docker-compose-test.yml up -d test-commerce
+    displayName: 'Build Commerce test'
+    workingDirectory: $(System.DefaultWorkingDirectory)

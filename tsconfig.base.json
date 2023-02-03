@@ -1,0 +1,39 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "esnext",
+    "module": "ESNext",
+    "lib": ["es2019", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "typeRoots": ["../../node_modules/@types", "../../types"],
+    "paths": {
+      "@hasty-bazar-admin/*": ["apps/admin/src/*"],
+      "@hasty-bazar-commerce/*": ["apps/commerce/src/*"],
+      "@hasty-bazar-vendor/*": ["apps/vendor/src/*"],
+      "@hasty-bazar/admin-shared/*": ["libs/admin-shared/src/*"],
+      "@hasty-bazar/auth": ["libs/auth/src/index.ts"],
+      "@hasty-bazar/core": ["libs/core/src/index.ts"],
+      "@hasty-bazar/generate-component": ["libs/generate-component/src/index.ts"],
+      "@hasty-bazar/material-provider": ["libs/material-provider/src/index.ts"],
+      "@hasty-bazar/query-builder": ["libs/query-builder/src/index.ts"],
+      "@hasty-bazar/services": ["libs/services/src/index.ts"],
+      "@hasty-bazar/share": ["libs/share/src/index.ts"],
+      "@hasty-bazar/storybook": ["libs/storybook/src/index.ts"],
+      "@hasty-bazar/utils": ["libs/utils/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,16 @@
+.Pages {
+  display: grid;
+  width: 100%;
+  overflow-x: auto;
+  margin: 0;
+
+  &.horizontal {
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+  }
+
+  &.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 150px);
+  }
+}

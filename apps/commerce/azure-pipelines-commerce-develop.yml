@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'apps/commerce/*'
+pool:
+  name: 'develop4'
+
+steps:
+  - script: |
+      cp apps/commerce/.env.dev apps/commerce/.env
+      docker-compose -f docker-compose-develop.yml build dev-commerce --no-cache
+      docker-compose -f docker-compose-develop.yml kill dev-commerce
+      docker-compose -f docker-compose-develop.yml up -d dev-commerce
+    displayName: 'Build Commerce develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

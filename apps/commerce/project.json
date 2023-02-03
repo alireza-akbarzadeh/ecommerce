@@ -1,0 +1,63 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/commerce",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/commerce",
+        "outputPath": "dist/apps/commerce",
+        "assets": ["apps/commerce/src/favicon.ico", "apps/commerce/src/assets"]
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "commerce:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "commerce:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "commerce:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "commerce:build:production"
+      }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/commerce/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "messages": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "pnpm formatjs extract './apps/commerce/src/**/*.messages.ts' --out-file ./apps/commerce/public/locale/temp.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile './apps/commerce/public/locale/temp.json' --out-file ./apps/commerce/public/locale/fa.json"
+      }
+    }
+  },
+  "tags": []
+}

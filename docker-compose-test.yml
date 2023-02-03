@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  test-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile-storybook
+    restart: always
+    container_name: 'test_storybook_front'
+    ports:
+      - 4010:80
+
+  test-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile-admin
+    restart: always
+    container_name: 'test_admin_front'
+    #    network_mode: host
+    ports:
+      - 4011:4000
+
+  test-vendor:
+    build:
+      context: .
+      dockerfile: Dockerfile-vendor
+    restart: always
+    container_name: 'test_vendor_front'
+    #    network_mode: host
+    ports:
+      - 4012:4001
+
+  test-commerce:
+    build:
+      context: .
+      dockerfile: Dockerfile-commerce
+    restart: always
+    container_name: 'test_commerce_front'
+    #    network_mode: host
+    ports:
+      - 4000:4000
+
+networks:
+  default:
+    external:
+      name: test

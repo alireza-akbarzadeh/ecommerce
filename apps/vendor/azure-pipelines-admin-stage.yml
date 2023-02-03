@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - stage
+  paths:
+    include:
+      - 'apps/vendor/*'
+pool:
+  name: 'stage-frontend-36'
+
+steps:
+  - script: |
+      cp apps/vendor/.env.stage apps/vendor/.env
+      docker-compose -f docker-compose-stage.yml build stage-vendor --no-cache
+      docker-compose -f docker-compose-stage.yml kill stage-vendor
+      docker-compose -f docker-compose-stage.yml up -d stage-vendor
+    displayName: 'Build vendor stage'
+    workingDirectory: $(System.DefaultWorkingDirectory)

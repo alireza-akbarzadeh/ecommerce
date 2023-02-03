@@ -1,0 +1,21 @@
+{
+  "app.vendor.enterValid": "لطفا {msg} معتبری وارد کنید.",
+  "app.vendor.isRequired": "{msg} اجباری است.",
+  "app.vendor.minArrayLengthValidation": "لطفا حداقل {count} آیتم وارد کنید.",
+  "app.vendor.minLengthValidation": "حداقل باید {count} کاراکتر وارد کنید.",
+  "app.vendor.mostNumberWithCount": "حداقل باید {count} عدد وارد کنید.",
+  "app.vendor.wrongPattern": "الگو اشتباه است باید از این الگو پیروی کنید: {msg}",
+  "app.domains.users.list.edit": "ویرایش",
+  "app.domains.users.list.general": "عمومی",
+  "app.global.delete": "حذف",
+  "app.global.details": "اطلاعات تکمیلی",
+  "app.global.edit": "ویرایش",
+  "app.global.email": "ایمیل",
+  "app.global.hastiBazar": "هستی بازار",
+  "app.global.history": "تاریخچه",
+  "app.global.id": "شناسه",
+  "app.global.lastName": "نام خانوادگی",
+  "app.global.name": "نام",
+  "app.global.phoneNumber": "شماره موبایل",
+  "app.global.url": "آدرس وب"
+}

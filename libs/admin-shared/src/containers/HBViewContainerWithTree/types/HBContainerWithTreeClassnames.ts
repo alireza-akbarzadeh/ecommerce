@@ -1,0 +1,11 @@
+export type HBContainerWithTreeClassnames =
+  | 'toolsContainer'
+  | 'mainContainer'
+  | 'treeColumn'
+  | 'treeItems'
+  | 'container'
+  | 'optionsColumn'
+  | 'pageTitleBar'
+  | 'dataNotFound'
+  | 'displayAddChildrenButton'
+  | 'bullet'

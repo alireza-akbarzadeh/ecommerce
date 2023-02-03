@@ -1,0 +1,22 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - test
+  paths:
+    include:
+      - 'apps/vendor/*'
+pool:
+  name: 'TEST-pool'
+
+steps:
+  - script: |
+      cp apps/vendor/.env.test apps/vendor/.env
+      cp apps/commerce/.env.test apps/commerce/.env
+      docker-compose -f docker-compose-test.yml build test-vendor --no-cache
+      docker-compose -f docker-compose-test.yml kill test-vendor
+      docker-compose -f docker-compose-test.yml up -d test-vendor
+    displayName: 'Build vendor test'
+    workingDirectory: $(System.DefaultWorkingDirectory)

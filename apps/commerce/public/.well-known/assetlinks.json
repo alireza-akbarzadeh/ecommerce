@@ -1,0 +1,22 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dartil.app",
+      "sha256_cert_fingerprints": [
+        "35:D7:A1:51:69:F4:17:4F:E9:74:F3:77:05:5C:5B:E3:9A:EF:A0:88:A6:C3:58:55:C6:15:C7:E7:EB:A4:06:E0"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.dartil.app",
+      "sha256_cert_fingerprints": [
+        "7E:19:66:CF:CD:9B:63:70:B4:F2:5A:69:6D:49:69:A9:14:37:6F:A8:AB:EA:11:33:85:26:9C:05:A8:B5:19:40"
+      ]
+    }
+  }
+]

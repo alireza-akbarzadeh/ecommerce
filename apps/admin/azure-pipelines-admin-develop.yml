@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'apps/admin/*'
+pool:
+  name: 'develop3'
+
+steps:
+  - script: |
+      cp apps/admin/.env.dev apps/admin/.env
+      docker-compose -f docker-compose-develop.yml build dev-admin --no-cache
+      docker-compose -f docker-compose-develop.yml kill dev-admin
+      docker-compose -f docker-compose-develop.yml up -d dev-admin
+    displayName: 'Build Admin develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

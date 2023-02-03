@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - stage
+  paths:
+    include:
+      - 'apps/commerce/*'
+pool:
+  name: 'stage-frontend-36'
+
+steps:
+  - script: |
+      cp apps/commerce/.env.stage apps/commerce/.env
+      docker-compose -f docker-compose-stage.yml build stage-commerce --no-cache
+      docker-compose -f docker-compose-stage.yml kill stage-commerce
+      docker-compose -f docker-compose-stage.yml up -d stage-commerce
+    displayName: 'Build Commerce stage'
+    workingDirectory: $(System.DefaultWorkingDirectory)

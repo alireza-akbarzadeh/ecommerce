@@ -1,0 +1,248 @@
+trigger:
+  batch: true
+  branches:
+    include:
+      - stage
+      # - test
+      # - demo
+  paths:
+    include:
+      - 'package.json'
+      - 'pnpm.lock'
+
+parameters:
+  - name: deploy
+    displayName: Deploy
+    type: boolean
+    default: false
+    values:
+      - false
+      - true
+
+variables:
+  - group: Dartil
+
+pool:
+  name: 'stage'
+
+stages:
+  - stage: Installing_dependencies
+    displayName: Installing Dependencies
+    jobs:
+      - job: Installing_dependencies
+        displayName: Installing Dependencies
+        steps:
+          - task: Bash@3
+            displayName: Installing Dependencies
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+                docker pull $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) || true
+                docker build -f Dockerfile-Deps --progress=plain -t $(dockerRegistry)/frontend/deps:$(Build.BuildNumber) . --cache-from	$(dockerRegistry)/frontend/deps:$(Build.SourceBranchName)
+          - task: Bash@3
+            displayName: 'Pushing deps Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker push $(dockerRegistry)/frontend/deps:$(Build.BuildNumber)
+                docker tag $(dockerRegistry)/frontend/deps:$(Build.BuildNumber) $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName)
+                docker push $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName)
+  - stage: Build_Admin
+    displayName: Build Admin image
+    dependsOn: Installing_dependencies
+    jobs:
+      - job: Build_admin
+        displayName: 'Building Admin image'
+        steps:
+          - task: CopyFiles@2
+            displayName: Preparing docker files...
+            inputs:
+              SourceFolder: 'Dockerfiles/admin'
+              Contents: |
+                Dockerfile-build
+              TargetFolder: '.'
+              OverWrite: true
+          - task: Bash@3
+            displayName: 'Building Admin build Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                cp apps/admin/.env.$(Build.SourceBranchName) apps/admin/.env
+                cp apps/commerce/.env.$(Build.SourceBranchName) apps/commerce/.env
+                cp apps/vendor/.env.$(Build.SourceBranchName) apps/vendor/.env
+                docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+                docker pull $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) || true
+                docker build -f Dockerfile-build --progress=plain -t $(dockerRegistry)/frontend/admin-build:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) --no-cache
+          - task: Bash@3
+            displayName: 'Pushing Admin build Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker push $(dockerRegistry)/frontend/admin-build:$(Build.BuildNumber)
+                docker tag $(dockerRegistry)/frontend/admin-build:$(Build.BuildNumber) $(dockerRegistry)/frontend/admin-build:$(Build.SourceBranchName)
+                docker push $(dockerRegistry)/frontend/admin-build:$(Build.SourceBranchName)
+  - stage: Build_commerce
+    displayName: Build commerce image
+    dependsOn: Installing_dependencies
+    jobs:
+      - job: Build_commerce
+        displayName: 'Building commerce image'
+        steps:
+          - task: CopyFiles@2
+            displayName: Preparing docker files...
+            inputs:
+              SourceFolder: 'Dockerfiles/commerce'
+              Contents: |
+                Dockerfile-build
+              TargetFolder: '.'
+              OverWrite: true
+          - task: Bash@3
+            displayName: 'Building commerce build Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                cp apps/admin/.env.$(Build.SourceBranchName) apps/admin/.env
+                cp apps/commerce/.env.$(Build.SourceBranchName) apps/commerce/.env
+                cp apps/vendor/.env.$(Build.SourceBranchName) apps/vendor/.env
+                docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+                docker pull $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) || true
+                docker build -f Dockerfile-build --progress=plain -t $(dockerRegistry)/frontend/commerce-build:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) --no-cache
+          - task: Bash@3
+            displayName: 'Pushing commerce build Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker push $(dockerRegistry)/frontend/commerce-build:$(Build.BuildNumber)
+                docker tag $(dockerRegistry)/frontend/commerce-build:$(Build.BuildNumber) $(dockerRegistry)/frontend/commerce-build:$(Build.SourceBranchName)
+                docker push $(dockerRegistry)/frontend/commerce-build:$(Build.SourceBranchName)
+  # - stage: Build_vendor
+  #   displayName: Build vendor image
+  #   dependsOn: Installing_dependencies
+  #   jobs:
+  #     - job: Build_vendor
+  #       displayName: 'Building vendor image'
+  #       continueOnError: true
+  #       steps:
+  #         - task: CopyFiles@2
+  #           displayName: Preparing docker files...
+  #           inputs:
+  #             SourceFolder: 'Dockerfiles/vendor'
+  #             Contents: |
+  #               Dockerfile-build
+  #             TargetFolder: '.'
+  #             OverWrite: true
+  #         - task: Bash@3
+  #           displayName: 'Building vendor build Docker image'
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |
+  #               cp apps/admin/.env.$(Build.SourceBranchName) apps/admin/.env
+  #               cp apps/commerce/.env.$(Build.SourceBranchName) apps/commerce/.env
+  #               cp apps/vendor/.env.$(Build.SourceBranchName) apps/vendor/.env
+  #               docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+  #               docker pull $(dockerRegistry)/frontend/deps:$(Build.SourceBranchName) || true
+  #               docker build -f Dockerfile-build --progress=plain -t $(dockerRegistry)/frontend/vendor-build:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/deps:$(Build.SourceBranchName)
+  #         - task: Bash@3
+  #           displayName: 'Pushing vendor build Docker image'
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |
+  #               docker push $(dockerRegistry)/frontend/vendor-build:$(Build.BuildNumber)
+  #               docker tag $(dockerRegistry)/frontend/vendor-build:$(Build.BuildNumber) $(dockerRegistry)/frontend/vendor-build:$(Build.SourceBranchName)
+  #               docker push $(dockerRegistry)/frontend/vendor-build:$(Build.SourceBranchName)
+
+  - stage: Build_Admin_Deployment
+    displayName: Build Admin Deployment image
+    dependsOn: Build_Admin
+    jobs:
+      - job: Build_admin_Deployment
+        displayName: 'Building Admin Deployment image'
+        steps:
+          - task: CopyFiles@2
+            displayName: Preparing docker files...
+            inputs:
+              SourceFolder: 'Dockerfiles/admin'
+              Contents: |
+                Dockerfile-deploy
+              TargetFolder: '.'
+              OverWrite: true
+          - task: Bash@3
+            displayName: 'Building Admin Deployment Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+                docker pull $(dockerRegistry)/frontend/admin-build:$(Build.SourceBranchName) || true
+                docker build -f Dockerfile-deploy --progress=plain -t $(dockerRegistry)/frontend/admin-deploy:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/admin-build:$(Build.SourceBranchName) --no-cache
+          - task: Bash@3
+            displayName: 'Pushing Admin Deployment Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker push $(dockerRegistry)/frontend/admin-deploy:$(Build.BuildNumber)
+                docker tag $(dockerRegistry)/frontend/admin-deploy:$(Build.BuildNumber) $(dockerRegistry)/frontend/admin-deploy:$(Build.SourceBranchName)
+                docker push $(dockerRegistry)/frontend/admin-deploy:$(Build.SourceBranchName)
+  - stage: Build_commerce_Deployment
+    displayName: Build commerce Deployment image
+    dependsOn: Build_commerce
+    jobs:
+      - job: Build_commerce_Deployment
+        displayName: 'Building commerce Deployment image'
+        steps:
+          - task: CopyFiles@2
+            displayName: Preparing docker files...
+            inputs:
+              SourceFolder: 'Dockerfiles/commerce'
+              Contents: |
+                Dockerfile-deploy
+              TargetFolder: '.'
+              OverWrite: true
+          - task: Bash@3
+            displayName: 'Building commerce Deployment Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+                docker pull $(dockerRegistry)/frontend/commerce-build:$(Build.SourceBranchName) || true
+                docker build -f Dockerfile-deploy --progress=plain -t $(dockerRegistry)/frontend/commerce-deploy:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/commerce-build:$(Build.SourceBranchName) --no-cache
+          - task: Bash@3
+            displayName: 'Pushing commerce build Docker image'
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker push $(dockerRegistry)/frontend/commerce-deploy:$(Build.BuildNumber)
+                docker tag $(dockerRegistry)/frontend/commerce-deploy:$(Build.BuildNumber) $(dockerRegistry)/frontend/commerce-deploy:$(Build.SourceBranchName)
+                docker push $(dockerRegistry)/frontend/commerce-deploy:$(Build.SourceBranchName)
+  # - stage: Build_vendor_Deployment
+  #   displayName: Build vendor Deployment image
+  #   dependsOn: Build_vendor
+  #   jobs:
+  #     - job: Build_vendor
+  #       displayName: 'Building vendor Deployment image'
+  #       continueOnError: true
+  #       steps:
+  #         - task: CopyFiles@2
+  #           displayName: Preparing docker files...
+  #           inputs:
+  #             SourceFolder: 'Dockerfiles/vendor'
+  #             Contents: |
+  #               Dockerfile-deploy
+  #             TargetFolder: '.'
+  #             OverWrite: true
+  #         - task: Bash@3
+  #           displayName: 'Building vendor Deployment Docker image'
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |
+  #               docker login -u $(dockerRegistryUser) -p $(dockerRegistryPassword) $(dockerRegistry)
+  #               docker pull $(dockerRegistry)/frontend/vendor-build:$(Build.SourceBranchName) || true
+  #               docker build -f Dockerfile-deploy --progress=plain -t $(dockerRegistry)/frontend/vendor-deploy:$(Build.BuildNumber) . --build-arg BASEIMAGE=$(dockerRegistry)/frontend/cendor-build:$(Build.SourceBranchName)
+  #         - task: Bash@3
+  #           displayName: 'Pushing vendor Deployment Docker image'
+  #           inputs:
+  #             targetType: 'inline'
+  #             script: |
+  #               docker push $(dockerRegistry)/frontend/vendor-deploy:$(Build.BuildNumber)
+  #               docker tag $(dockerRegistry)/frontend/vendor-deploy:$(Build.BuildNumber) $(dockerRegistry)/frontend/vendor-deploy:$(Build.SourceBranchName)
+  #               docker push $(dockerRegistry)/frontend/vendor-deploy:$(Build.SourceBranchName)

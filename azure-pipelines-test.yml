@@ -1,0 +1,29 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - test
+  paths:
+    include:
+      - '*'
+    exclude:
+      - 'apps/admin/*'
+      - 'apps/commerce/*'
+      - 'apps/vendor/*'
+      - 'libs/storybook/*'
+pool:
+  name: 'test-admin-226'
+
+steps:
+  - script: |
+      cp apps/admin/.env.test apps/admin/.env
+      cp apps/vendor/.env.test apps/vendor/.env
+      cp apps/commerce/.env.test apps/commerce/.env
+      docker login -u azure -p Fr0xplus docker.hasti.co
+      docker-compose -f docker-compose-test.yml build --no-cache
+      docker-compose -f docker-compose-test.yml down
+      docker-compose -f docker-compose-test.yml up -d
+    displayName: 'Build Whole Monorepo'
+    workingDirectory: $(System.DefaultWorkingDirectory)

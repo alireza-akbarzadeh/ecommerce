@@ -1,0 +1,32 @@
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - demo
+  paths:
+    include:
+      - 'apps/commerce/*'
+
+resources:
+  - repo: self
+
+stages:
+  - stage: Build
+    displayName: Build image and deploy
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          name: demo-frontend-commerce-194
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                cp apps/commerce/.env.demo apps/commerce/.env
+                docker-compose -f docker-compose-demo.yml build --no-cache demo-commerce
+                docker-compose -f docker-compose-demo.yml kill demo-commerce
+                docker-compose -f docker-compose-demo.yml up -d
+              displayName: 'Build Whole Monorepo'
+              workingDirectory: $(System.DefaultWorkingDirectory)

@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  dev-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile-storybook
+    restart: always
+    container_name: 'dev_storybook_front'
+    ports:
+      - 127.0.0.1:2010:80
+
+  dev-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile-admin
+    restart: always
+    container_name: 'dev_admin_front'
+    # network_mode: host
+    ports:
+      - 127.0.0.1:2011:4000
+
+  dev-vendor:
+    build:
+      context: .
+      dockerfile: Dockerfile-vendor
+    restart: always
+    container_name: 'dev_vendor_front'
+    #    network_mode: host
+    ports:
+      - 127.0.0.1:2012:4001
+
+  dev-commerce:
+    build:
+      context: .
+      dockerfile: Dockerfile-commerce
+    restart: always
+    container_name: 'dev_commerce_front'
+    #    network_mode: host
+    ports:
+      - 127.0.0.1:2013:4000
+
+networks:
+  default:
+    external:
+      name: develop

@@ -1,0 +1,22 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'apps/admin/*'
+pool:
+  name: 'front_group'
+
+steps:
+  - script: |
+      cp apps/admin/.env.dev-new apps/admin/.env
+      docker pull docker.hasti.co/frontend/deps:latest
+      docker compose -f docker-compose-develop.yml build dev-admin --no-cache
+      docker compose -f docker-compose-develop.yml kill dev-admin
+      docker compose -f docker-compose-develop.yml up -d dev-admin
+    displayName: 'Build Admin develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

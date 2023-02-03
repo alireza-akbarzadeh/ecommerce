@@ -1,0 +1,71 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/vendor",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/vendor",
+        "outputPath": "dist/apps/vendor",
+        "assets": ["apps/vendor/src/favicon.ico", "apps/vendor/src/assets"]
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "vendor:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "vendor:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "vendor:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "vendor:build:production"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/vendor"],
+      "options": {
+        "jestConfig": "apps/vendor/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/vendor/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
+    },
+    "messages": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "pnpm formatjs extract './apps/vendor/src/**/*.messages.ts' --out-file ./apps/vendor/public/locale/temp.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile './apps/vendor/public/locale/temp.json' --out-file ./apps/vendor/public/locale/fa.json"
+      }
+    }
+  },
+  "tags": []
+}

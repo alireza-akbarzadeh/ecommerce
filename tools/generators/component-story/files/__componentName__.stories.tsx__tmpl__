@@ -1,0 +1,26 @@
+import { ArgTypes, Story, Meta } from '@storybook/react';
+import <%= componentName %>, { <%= propsTypeName %> } from './<%= componentImportFileName %>'
+import <%= componentName %>Doc from './<%= componentImportFileName %>.doc';
+
+
+type <%= componentName %>StoryType = object
+const argTypes:ArgTypes<<%= componentName %>StoryType> = {}
+
+export default {
+  component: <%= componentName %>,
+  parameters: {
+    docs: {
+      page: <%= componentName %>Doc,
+    },
+    options: {
+      showPanel: true,
+    },
+  },
+  title: '<%= projectName %>/<%= componentName %>',
+  argTypes   
+} as Meta<<%= componentName %>StoryType>
+
+const Template: Story<<%= componentName %>StoryType> = (args) => <<%= componentName %> {...args} />;
+
+export const Primary:Story<<%= componentName %>StoryType> = Template.bind({})
+Primary.args = {}

@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - stage
+  paths:
+    include:
+      - 'apps/admin/*'
+pool:
+  name: 'stage-frontend-36'
+
+steps:
+  - script: |
+      cp apps/admin/.env.stage apps/admin/.env
+      docker-compose -f docker-compose-stage.yml build stage-admin --no-cache
+      docker-compose -f docker-compose-stage.yml kill stage-admin
+      docker-compose -f docker-compose-stage.yml up -d stage-admin
+    displayName: 'Build Admin stage'
+    workingDirectory: $(System.DefaultWorkingDirectory)

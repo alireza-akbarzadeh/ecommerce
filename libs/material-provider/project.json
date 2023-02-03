@@ -1,0 +1,46 @@
+{
+  "root": "libs/material-provider",
+  "sourceRoot": "libs/material-provider/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/material-provider",
+        "tsConfig": "libs/material-provider/tsconfig.lib.json",
+        "project": "libs/material-provider/package.json",
+        "entryFile": "libs/material-provider/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/material-provider/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/material-provider/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/material-provider"],
+      "options": {
+        "jestConfig": "libs/material-provider/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
+    }
+  }
+}

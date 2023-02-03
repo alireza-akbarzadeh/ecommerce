@@ -1,0 +1,35 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es6", "dom"],
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "jsx": "preserve",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true,
+    "jsxImportSource": "@emotion/react",
+    "preserveSymlinks": true,
+    "types": ["jest", "node"],
+    "typeRoots": ["node_modules/@types", "src/types"]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "next-env.d.ts",
+    "src/components/MainLayoutToolbar",
+    "src/components/HBDefaultHeader",
+    "src/domains/Profile/addressManagment",
+    "../../libs/utils/src/text/text.ts"
+  ],
+  "exclude": ["node_modules", "jest.config.ts"]
+}

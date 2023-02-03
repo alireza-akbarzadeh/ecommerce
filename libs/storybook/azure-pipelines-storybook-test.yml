@@ -1,0 +1,20 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - test
+  paths:
+    include:
+      - 'libs/storybook/*'
+pool:
+  name: 'test-frontend5-194'
+
+steps:
+  - script: |
+      docker-compose -f docker-compose-test.yml build test-storybook --no-cache
+      docker-compose -f docker-compose-test.yml kill test-storybook
+      docker-compose -f docker-compose-test.yml up -d test-storybook
+    displayName: 'Build storybook test'
+    workingDirectory: $(System.DefaultWorkingDirectory)

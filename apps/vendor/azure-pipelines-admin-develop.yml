@@ -1,0 +1,21 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'apps/vendor/*'
+pool:
+  name: 'develop3'
+
+steps:
+  - script: |
+      cp apps/vendor/.env.dev apps/vendor/.env
+      docker-compose -f docker-compose-develop.yml build dev-vendor --no-cache
+      docker-compose -f docker-compose-develop.yml kill dev-vendor
+      docker-compose -f docker-compose-develop.yml up -d dev-vendor
+    displayName: 'Build vendor develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

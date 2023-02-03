@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  stage-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile-storybook
+    restart: always
+    container_name: 'stage_storybook_front'
+    ports:
+      - 3010:80
+
+  stage-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile-admin
+    restart: always
+    container_name: 'stage_admin_front'
+    ports:
+      - 3011:3990
+
+  stage-vendor:
+    build:
+      context: .
+      dockerfile: Dockerfile-vendor
+    restart: always
+    container_name: 'stage_vendor_front'
+    ports:
+      - 3012:4001
+
+  stage-commerce:
+    build:
+      context: .
+      dockerfile: Dockerfile-commerce
+    restart: always
+    container_name: 'stage_commerce_front'
+    ports:
+      - 3013:4002
+
+networks:
+  default:
+    external:
+      name: stage

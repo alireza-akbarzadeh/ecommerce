@@ -1,0 +1,71 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/admin",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "root": "apps/admin",
+        "outputPath": "dist/apps/admin",
+        "assets": ["apps/admin/src/favicon.ico", "apps/admin/src/assets"]
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/next:server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "admin:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "admin:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "admin:build:production",
+          "dev": false
+        }
+      }
+    },
+    "export": {
+      "executor": "@nrwl/next:export",
+      "options": {
+        "buildTarget": "admin:build:production"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/admin"],
+      "options": {
+        "jestConfig": "apps/admin/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/admin/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
+    },
+    "messages": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": [],
+      "options": {
+        "command": "pnpm formatjs extract './apps/admin/src/**/*.messages.ts' --out-file ./apps/admin/public/locale/temp.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]' && formatjs compile './apps/admin/public/locale/temp.json' --out-file ./apps/admin/public/locale/fa.json"
+      }
+    }
+  },
+  "tags": []
+}

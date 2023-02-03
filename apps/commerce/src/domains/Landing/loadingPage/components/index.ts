@@ -1,0 +1,6 @@
+export { default as AdBannersSkeleton } from './adBannersSkeleton'
+export { default as BannersListSKeleton } from './bannersListSkeleton'
+export { default as CategoriesSkeleton } from './categoriesSkeleton'
+export { default as ProductListSkeleton } from './productListSkeleton'
+export { default as VendorsListSkeleton } from './vendorsListSkeleton'
+export { default as VendorsSkeleton } from './vendorsSkeleton'

@@ -1,0 +1,7 @@
+FROM docker.hasti.co/node/node:16-alpine
+RUN apk add jq
+RUN npm add -g pnpm@6.31.0
+WORKDIR /usr/src/app
+COPY package.json pnpm-lock.yaml .npmrc /usr/src/app/
+RUN pnpm install --frozen-lockfile
+RUN ls -la /usr/src/app/

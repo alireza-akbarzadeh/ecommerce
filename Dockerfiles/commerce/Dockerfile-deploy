@@ -1,0 +1,7 @@
+ARG BASEIMAGE
+FROM ${BASEIMAGE} AS copy-src
+FROM docker.hasti.co/node/node:16-alpine
+WORKDIR /usr/src/app
+COPY --from=copy-src /usr/src/app /usr/src/app
+RUN npm add -g pnpm@6.31.0
+CMD pnpm nx serve commerce --configuration=production --host 0.0.0.0 --port 4002

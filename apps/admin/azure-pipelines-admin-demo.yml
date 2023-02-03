@@ -1,0 +1,32 @@
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - demo
+  paths:
+    include:
+      - 'apps/admin/*'
+
+resources:
+  - repo: self
+
+stages:
+  - stage: Build
+    displayName: Build image and deploy
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          name: demo-frontend-admin-194
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                cp -rf apps/admin/.env.demo apps/admin/.env
+                docker-compose -f docker-compose-demo.yml build --no-cache demo-admin
+                docker-compose -f docker-compose-demo.yml kill demo-admin
+                docker-compose -f docker-compose-demo.yml up -d
+              displayName: 'Build Whole Monorepo'
+              workingDirectory: $(System.DefaultWorkingDirectory)

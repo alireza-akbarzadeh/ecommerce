@@ -1,0 +1,59 @@
+{
+  "app.vendor.enterValid": {
+    "defaultMessage": "لطفا {msg} معتبری وارد کنید."
+  },
+  "app.vendor.isRequired": {
+    "defaultMessage": "{msg} اجباری است."
+  },
+  "app.vendor.minArrayLengthValidation": {
+    "defaultMessage": "لطفا حداقل {count} آیتم وارد کنید."
+  },
+  "app.vendor.minLengthValidation": {
+    "defaultMessage": "حداقل باید {count} کاراکتر وارد کنید."
+  },
+  "app.vendor.mostNumberWithCount": {
+    "defaultMessage": "حداقل باید {count} عدد وارد کنید."
+  },
+  "app.vendor.wrongPattern": {
+    "defaultMessage": "الگو اشتباه است باید از این الگو پیروی کنید: {msg}"
+  },
+  "app.domains.users.list.edit": {
+    "defaultMessage": "ویرایش"
+  },
+  "app.domains.users.list.general": {
+    "defaultMessage": "عمومی"
+  },
+  "app.global.delete": {
+    "defaultMessage": "حذف"
+  },
+  "app.global.details": {
+    "defaultMessage": "جزئیات"
+  },
+  "app.global.edit": {
+    "defaultMessage": "ویرایش"
+  },
+  "app.global.email": {
+    "defaultMessage": "ایمیل"
+  },
+  "app.global.hastiBazar": {
+    "defaultMessage": "هستی بازار"
+  },
+  "app.global.history": {
+    "defaultMessage": "تاریخچه"
+  },
+  "app.global.id": {
+    "defaultMessage": "شناسه"
+  },
+  "app.global.lastName": {
+    "defaultMessage": "نام خانوادگی"
+  },
+  "app.global.name": {
+    "defaultMessage": "نام"
+  },
+  "app.global.phoneNumber": {
+    "defaultMessage": "شماره موبایل"
+  },
+  "app.global.url": {
+    "defaultMessage": "آدرس وب"
+  }
+}

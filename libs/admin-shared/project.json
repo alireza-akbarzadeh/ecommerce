@@ -1,0 +1,46 @@
+{
+  "root": "libs/admin-shared",
+  "sourceRoot": "libs/admin-shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/admin-shared",
+        "tsConfig": "libs/admin-shared/tsconfig.lib.json",
+        "project": "libs/admin-shared/package.json",
+        "entryFile": "libs/admin-shared/src/index.ts",
+        "external": ["react/jsx-runtime"],
+        "rollupConfig": "@nrwl/react/plugins/bundle-rollup",
+        "compiler": "babel",
+        "assets": [
+          {
+            "glob": "libs/admin-shared/README.md",
+            "input": ".",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/admin-shared/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/admin-shared"],
+      "options": {
+        "jestConfig": "libs/admin-shared/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "tsCheck": {
+      "executor": "./tools/executors/tsCheck:tsCheck"
+    }
+  }
+}

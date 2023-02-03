@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  demo-storybook:
+    build:
+      context: .
+      dockerfile: Dockerfile-storybook
+    restart: always
+    container_name: 'demo_storybook_front'
+    ports:
+      - 127.0.0.1:2010:80
+
+  demo-admin:
+    build:
+      context: .
+      dockerfile: Dockerfile-admin
+    restart: always
+    container_name: 'demo_admin_front'
+    #    network_mode: host
+    ports:
+      - 127.0.0.1:2011:4000
+
+  demo-vendor:
+    build:
+      context: .
+      dockerfile: Dockerfile-vendor
+    restart: always
+    container_name: 'demo_vendor_front'
+    #    network_mode: host
+    ports:
+      - 127.0.0.1:2012:4001
+
+  demo-commerce:
+    build:
+      context: .
+      dockerfile: Dockerfile-commerce
+    restart: always
+    container_name: 'demo_commerce_front'
+    #    network_mode: host
+    ports:
+      - 127.0.0.1:2013:4002
+
+networks:
+  default:
+    external:
+      name: demo

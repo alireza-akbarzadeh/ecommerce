@@ -1,0 +1,22 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - 'apps/commerce/*'
+pool:
+  name: 'front_group'
+
+steps:
+  - script: |
+      cp apps/commerce/.env.dev-new apps/commerce/.env
+      docker pull docker.hasti.co/frontend/deps:latest
+      docker compose -f docker-compose-develop.yml build dev-commerce --no-cache
+      docker compose -f docker-compose-develop.yml kill dev-commerce
+      docker compose -f docker-compose-develop.yml up -d dev-commerce
+    displayName: 'Build Commerce develop'
+    workingDirectory: $(System.DefaultWorkingDirectory)

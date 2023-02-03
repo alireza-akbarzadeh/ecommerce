@@ -1,0 +1,22 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - test
+  paths:
+    include:
+      - 'apps/admin/*'
+pool:
+  name: 'TEST-pool'
+
+steps:
+  - script: |
+      cp apps/admin/.env.test apps/admin/.env
+      cp apps/commerce/.env.test apps/commerce/.env
+      docker-compose -f docker-compose-test.yml build test-admin --no-cache
+      docker-compose -f docker-compose-test.yml kill test-admin
+      docker-compose -f docker-compose-test.yml up -d test-admin
+    displayName: 'Build Admin test'
+    workingDirectory: $(System.DefaultWorkingDirectory)

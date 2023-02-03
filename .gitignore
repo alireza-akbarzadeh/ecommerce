@@ -1,0 +1,75 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# local env files
+# .env*
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# next.js
+/.next/
+/.idea/
+/out/
+/.idea/
+
+# testing
+coverage
+test-report.*
+__mocks__
+
+# production
+build
+dist
+
+apps/admin/tsconfig.tsbuildinfo
+apps/commerce/tsconfig.tsbuildinfo
+apps/vendor/tsconfig.tsbuildinfo
+
+apps/**/src/core/redux/baseConfigs/*.ts
+apps/**/src/core/redux/baseConfigs/*.json
+apps/**/src/services/*.ts
+
+libs/**/src/core/redux/baseConfigs/*.ts
+libs/**/src/core/redux/baseConfigs/*.json
+libs/**/src/services/*.ts

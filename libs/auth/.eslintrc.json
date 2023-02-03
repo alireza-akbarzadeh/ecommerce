@@ -1,0 +1,28 @@
+{
+  "extends": ["plugin:@nrwl/nx/react-typescript", "../../.eslintrc.json"],
+  "plugins": ["eslint-plugin-react", "eslint-plugin-react-hooks", "eslint-plugin-jsx-a11y"],
+  "ignorePatterns": [],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": "warn",
+        "react/jsx-key": "warn",
+        "react/display-name": "warn",
+        "react/no-children-prop": "warn",
+        "react/jsx-no-useless-fragment": "warn",
+        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/rules-of-hooks": "warn",
+        "jsx-a11y/alt-text": [1]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "rules": {}
+    }
+  ]
+}

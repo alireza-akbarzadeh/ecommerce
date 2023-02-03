@@ -1,0 +1,6 @@
+import { styled } from '@mui/material';
+import { <%= name %>Props } from './<%= name %>';
+
+export const <%= name %>RootStyle = styled('div')<<%= name %>Props>(
+  ({ theme, testProp }) => ({})
+);

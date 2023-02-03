@@ -1,0 +1,19 @@
+FROM docker.hasti.co/frontend/deps:latest as starter
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN npm install -g pnpm@6.31.0
+RUN pnpm admin-codegen
+RUN pnpm commerce-codegen
+RUN pnpm admin-build
+EXPOSE 4000
+RUN jq 'del(.devDependencies)' package.json > package2.json
+RUN mv package2.json package.json
+RUN pnpm install
+RUN pnpm add nx@14.1.7 typescript@~4.6.2 --ignore-scripts
+
+FROM docker.hasti.co/node/node:16-alpine
+COPY --from=starter /usr/src/app /usr/src/app
+WORKDIR /usr/src/app
+RUN npm add -g pnpm@6.31.0
+CMD pnpm nx serve admin --port 4000 --configuration=production --host 0.0.0.0
+

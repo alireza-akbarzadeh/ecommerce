@@ -1,0 +1,41 @@
+# Build numbering format
+name: $(BuildID)
+
+trigger:
+  branches:
+    include:
+      - develop
+  paths:
+    include:
+      - '*'
+    exclude:
+      - 'apps/admin/*'
+      - 'apps/commerce/*'
+      - 'apps/vendor/*'
+      - 'libs/storybook/*'
+
+resources:
+  - repo: self
+
+stages:
+  - stage: Build
+    displayName: Build image and deploy
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          name: develop-frontend-226
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                docker login -u azure -p Fr0xplus docker.hasti.co
+                # docker-compose -f docker-compose-develop.yml build --no-cache dev-storybook
+                docker-compose -f docker-compose-develop.yml build --no-cache dev-admin
+                # docker-compose -f docker-compose-develop.yml build --no-cache dev-vendor
+                docker-compose -f docker-compose-develop.yml build --no-cache dev-commerce
+                docker-compose -f docker-compose-develop.yml down
+                docker-compose -f docker-compose-develop.yml up -d
+              displayName: 'Build Whole Monorepo'
+              workingDirectory: $(System.DefaultWorkingDirectory)

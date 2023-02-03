@@ -1,0 +1,12 @@
+ARG BASEIMAGE
+
+FROM ${BASEIMAGE}
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN pnpm admin-codegen
+RUN pnpm commerce-codegen
+RUN pnpm admin-build
+RUN jq 'del(.devDependencies)' package.json > package2.json
+RUN mv package2.json package.json
+RUN pnpm install
+RUN pnpm add nx@14.1.7 typescript@~4.6.2 --ignore-scripts

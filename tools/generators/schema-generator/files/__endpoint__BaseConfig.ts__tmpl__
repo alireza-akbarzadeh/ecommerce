@@ -1,0 +1,10 @@
+const baseConfig = {
+  schemaFile: './<%= endpoint %>Schema.json',
+  apiFile: '../baseApi.ts',
+  apiImport: 'baseApi',
+  outputFile: '../../../services/<%= endpoint %>Api.generated.ts',
+  exportName: '<%= endpoint %>Api',
+  hooks: { queries: true, lazyQueries: true, mutations: true },
+}
+
+export default baseConfig  

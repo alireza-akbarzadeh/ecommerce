@@ -1,0 +1,19 @@
+{
+  "app.admin.enterValid": "لطفا {msg} معتبری وارد کنید.",
+  "app.admin.isRequired": "{msg} اجباری است.",
+  "app.admin.minArrayLengthValidation": "لطفا حداقل {count} آیتم وارد کنید.",
+  "app.admin.minLengthValidation": "حداقل باید {count} کاراکتر وارد کنید.",
+  "app.admin.mostNumberWithCount": "حداقل باید {count} عدد وارد کنید.",
+  "app.admin.wrongPattern": "الگو اشتباه است باید از این الگو پیروی کنید: {msg}",
+  "app.global.delete": "حذف",
+  "app.global.details": "جزئیات",
+  "app.global.edit": "ویرایش",
+  "app.global.email": "ایمیل",
+  "app.global.hastiBazar": "بازار اینترنتی دارتیل",
+  "app.global.history": "تاریخچه",
+  "app.global.id": "شناسه",
+  "app.global.lastName": "نام خانوادگی",
+  "app.global.name": "نام",
+  "app.global.phoneNumber": "شماره موبایل",
+  "app.global.url": "آدرس وب"
+}

@@ -1,0 +1,5 @@
+FROM node:16
+WORKDIR /build
+COPY package.json yarn.lock ./
+RUN yarn
+RUN rm -f package.json
